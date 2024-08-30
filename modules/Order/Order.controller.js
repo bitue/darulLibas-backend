@@ -42,6 +42,77 @@ const makeOrder = async (req, res, next) => {
     }
 };
 
+const changeOrderStatus = async (req, res, next) => {
+    try {
+        const { id, status } = req.body;
+        const updatedOrder = await Order.findOneAndUpdate(
+            { _id: id, orderStatus: 'arrived' }, // Find order with status 'arrived'
+            { orderStatus: status }, // Update status to 'pending'
+            { new: true } // Return the updated document
+        );
+
+        if (updatedOrder) {
+            console.log('Order status updated successfully:', updatedOrder);
+            res.send({
+                status: 'Order status updated successfully:',
+                updatedOrder
+            });
+        } else {
+            console.log('No order found with the status "arrived"');
+            res.send({
+                status: 'No order found with the status arrived'
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
+const getAllOrders = async (req, res, next) => {
+    try {
+        const getAllOrders = await Order.find({}).populate('customerInfo').populate('shoppingInfo');
+        if (getAllOrders) {
+            res.send({
+                status: 'ok',
+                getAllOrders
+            });
+        } else {
+            res.send({
+                status: 'not found orders',
+                getAllOrders: []
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+const getOrderById = async (req, res, next) => {
+    try {
+        const { id } = req.body;
+        const getOrder = await Order.find({ _id: id })
+            .populate('customerInfo')
+            .populate('shoppingInfo');
+        if (getAllOrders) {
+            res.send({
+                status: 'ok',
+                getOrder
+            });
+        } else {
+            res.send({
+                status: 'not found orders'
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
 module.exports = {
-    makeOrder
+    makeOrder,
+    changeOrderStatus,
+    getAllOrders,
+    getOrderById
 };
