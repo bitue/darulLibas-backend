@@ -1,6 +1,10 @@
 const app = require('express');
 const { createAdmin, deleteAdmin } = require('./Admin.controller');
-const { createCategory, deleteCategory } = require('../Category/Category.controller');
+const {
+    createCategory,
+    deleteCategory,
+    getCategories
+} = require('../Category/Category.controller');
 const { addProduct, deleteProduct } = require('../Product/Product.controller');
 const { changeOrderStatus, getAllOrders, getOrderById } = require('../Order/Order.controller');
 const { getCustomerInfo } = require('../Customer/customer.controller');
@@ -11,6 +15,7 @@ adminRouter.delete('/deleteAdmin', deleteAdmin);
 
 adminRouter.post('/createCategory', createCategory);
 adminRouter.delete('/deleteCategory', deleteCategory);
+adminRouter.get('/getCategories', getCategories);
 
 adminRouter.post('/addProduct', addProduct);
 adminRouter.delete('/deleteProduct', deleteProduct);

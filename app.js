@@ -2,10 +2,11 @@
 const express = require('express');
 const app = express();
 const cors = require('cors'); // cors
-const createAdmin = require('./modules/Admin/Admin.controller');
+
 const { authRouter } = require('./modules/Auth/routes/auth.route');
 const { adminRouter } = require('./modules/Admin/Admin.route');
 const { orderRouter } = require('./modules/Order/Order.router');
+const { publicRouter } = require('./modules/Public/Public.router');
 
 require('dotenv').config(); // req for access dot env file
 
@@ -23,8 +24,8 @@ app.get('/', (req, res) => {
     res.send('home route');
 });
 
-// // public route
-// app.use('/public', publicRouter);
+// public route
+app.use('/public', publicRouter);
 
 // // auth routers
 app.use('/auth', authRouter);

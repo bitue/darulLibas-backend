@@ -48,6 +48,16 @@ const addProduct = async (req, res, next) => {
     }
 };
 
+const getAllProducts = async (req, res, next) => {
+    try {
+        const getAllProducts = await Product.find({});
+        res.send({ status: 'Category deleted successfully .....', products: getAllProducts });
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
 const deleteProduct = async (req, res, next) => {
     try {
         const { id } = req.body;
@@ -59,7 +69,20 @@ const deleteProduct = async (req, res, next) => {
     }
 };
 
+const getProductById = async (req, res, next) => {
+    try {
+        const { id } = req.body;
+        const getProduct = await Product.findById({ _id: id });
+        res.send({ status: 'Category deleted successfully .....', res: getProduct });
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
 module.exports = {
     addProduct,
-    deleteProduct
+    deleteProduct,
+    getAllProducts,
+    getProductById
 };

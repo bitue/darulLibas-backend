@@ -11,6 +11,17 @@ const createCategory = async (req, res, next) => {
     }
 };
 
+const getCategories = async (req, res, next) => {
+    try {
+        // const { name, description, img, reviews } = req.body;
+        const getAllCategories = await Category.find({});
+        res.send({ status: 'Category created successfully .....', categories: getAllCategories });
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
 const deleteCategory = async (req, res, next) => {
     try {
         const { id } = req.body;
@@ -24,5 +35,6 @@ const deleteCategory = async (req, res, next) => {
 
 module.exports = {
     createCategory,
-    deleteCategory
+    deleteCategory,
+    getCategories
 };
