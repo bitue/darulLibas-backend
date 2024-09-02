@@ -40,7 +40,18 @@ const deleteAdmin = async (req, res, next) => {
     }
 };
 
+const getAllAdmin = async (req, res, next) => {
+    try {
+        const allAdmins = await Admin.find({});
+        res.send({ admin: allAdmins, status: 'okay' });
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
 module.exports = {
     createAdmin,
-    deleteAdmin
+    deleteAdmin,
+    getAllAdmin
 };

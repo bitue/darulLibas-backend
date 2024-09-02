@@ -1,5 +1,5 @@
 const app = require('express');
-const { createAdmin, deleteAdmin } = require('./Admin.controller');
+const { createAdmin, deleteAdmin, getAllAdmin } = require('./Admin.controller');
 const {
     createCategory,
     deleteCategory,
@@ -12,8 +12,9 @@ const adminRouter = app.Router();
 
 adminRouter.post('/createAdmin', createAdmin);
 adminRouter.delete('/deleteAdmin', deleteAdmin);
+adminRouter.get('/getAllAdmin', getAllAdmin);
 
-adminRouter.post('/createCategory', createCategory);
+adminRouter.post('/addCategory', createCategory);
 adminRouter.delete('/deleteCategory', deleteCategory);
 adminRouter.get('/getCategories', getCategories);
 
