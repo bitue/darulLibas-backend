@@ -44,10 +44,28 @@ const makeOrder = async (req, res, next) => {
 
 const changeOrderStatus = async (req, res, next) => {
     try {
-        const { id, status } = req.body;
+        const orderStatusArray = ['arrived', 'approved', 'done'];
+        let { id, status, proceed } = req.body;
+        let idx = orderStatusArray.indexOf(status);
+        if (
+            (idx === 0 && proceed === 'prev') ||
+            (idx === orderStatusArray.length - 1 && proceed === 'next')
+        ) {
+            res.send({
+                status: 'Invalid order status to change'
+            });
+        }
+        let newStatus;
+        if (proceed === 'next') {
+            idx = idx + 1;
+            newStatus = orderStatusArray[idx];
+        } else {
+            newStatus = orderStatusArray[idx - 1];
+        }
+
         const updatedOrder = await Order.findOneAndUpdate(
-            { _id: id, orderStatus: 'arrived' }, // Find order with status 'arrived'
-            { orderStatus: status }, // Update status to 'pending'
+            { _id: id }, // Find order with status 'arrived'
+            { orderStatus: newStatus }, // Update status to 'pending'
             { new: true } // Return the updated document
         );
 
@@ -71,7 +89,10 @@ const changeOrderStatus = async (req, res, next) => {
 
 const getAllOrders = async (req, res, next) => {
     try {
-        const getAllOrders = await Order.find({}).populate('customerInfo').populate('shoppingInfo');
+        const getAllOrders = await Order.find({})
+            .populate('customerInfo')
+            .populate('shoppingInfo')
+            .sort({ _id: -1 });
         if (getAllOrders) {
             res.send({
                 status: 'ok',
@@ -88,6 +109,29 @@ const getAllOrders = async (req, res, next) => {
         next(err.message);
     }
 };
+
+const getAllSuccessfulOrders = async (req, res, next) => {
+    try {
+        const getAllOrders = await Order.find({ orderStatus: 'done' })
+            .populate('customerInfo')
+            .populate('shoppingInfo');
+        if (getAllOrders) {
+            res.send({
+                status: 'ok',
+                getAllOrders
+            });
+        } else {
+            res.send({
+                status: 'not found orders',
+                getAllOrders: []
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
 const getOrderById = async (req, res, next) => {
     try {
         const { id } = req.body;
@@ -110,9 +154,34 @@ const getOrderById = async (req, res, next) => {
     }
 };
 
+const deleteOrderById = async (req, res, next) => {
+    try {
+        const { id } = req.body;
+        //console.log(req);
+        const getOrder = await Order.findById({ _id: id });
+        // del the customer info
+        await Customer.findByIdAndDelete({ _id: getOrder.customerInfo });
+        // del the shopping info
+        await Shopping.findByIdAndDelete({ _id: getOrder.shoppingInfo });
+        // delete the order info from db
+        const delOrder = await Order.findByIdAndDelete({ _id: id });
+        // console.log(delOrder, ' dellllllllll');
+
+        res.send({
+            status: 'Okay ',
+            delOrder
+        });
+    } catch (err) {
+        console.log(err.message);
+        next(err.message);
+    }
+};
+
 module.exports = {
     makeOrder,
     changeOrderStatus,
     getAllOrders,
-    getOrderById
+    getOrderById,
+    deleteOrderById,
+    getAllSuccessfulOrders
 };
