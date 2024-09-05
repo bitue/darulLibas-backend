@@ -7,6 +7,7 @@ const { authRouter } = require('./modules/Auth/routes/auth.route');
 const { adminRouter } = require('./modules/Admin/Admin.route');
 const { orderRouter } = require('./modules/Order/Order.router');
 const { publicRouter } = require('./modules/Public/Public.router');
+const { checkToken } = require('./middlewares/checkToken');
 
 require('dotenv').config(); // req for access dot env file
 
@@ -31,7 +32,7 @@ app.use('/public', publicRouter);
 app.use('/auth', authRouter);
 
 // admin routers
-app.use('/admin', adminRouter);
+app.use('/admin', checkToken, adminRouter);
 
 // order routers
 app.use('/order', orderRouter);

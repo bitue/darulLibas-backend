@@ -29,10 +29,10 @@ const signIn = async (req, res, next) => {
                 //res.set('authToken', token);
                 res.json({
                     admin: dbAdmin,
-                    status: 'ok'
+                    status: 'Log in success'
                 });
             } else {
-                res.send('Auth error1').status(401);
+                res.send({ status: 'password error' }).status(401);
             }
         } else {
             res.send('Auth error2').status(401);
@@ -94,7 +94,20 @@ const changePassword = async (req, res, next) => {
 //     }
 // };
 
+const getAdminByToken = (req, res, next) => {
+    try {
+        console.log(1, 'getAdminByToken');
+        res.send({
+            status: 'OK',
+            admin: req.tokenPayLoad
+        });
+    } catch ({ message }) {
+        next(message);
+    }
+};
+
 module.exports = {
     signIn,
-    changePassword
+    changePassword,
+    getAdminByToken
 };

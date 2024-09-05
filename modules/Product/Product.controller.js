@@ -50,7 +50,8 @@ const addProduct = async (req, res, next) => {
 
 const getAllProducts = async (req, res, next) => {
     try {
-        const getAllProducts = await Product.find({});
+        const getAllProducts = await Product.find({}).populate('category');
+        console.log(getAllProducts);
         res.send({ status: 'Category deleted successfully .....', products: getAllProducts });
     } catch (err) {
         console.log(err.message);
