@@ -20,7 +20,13 @@ const categorySchema = new mongoose.Schema(
         reviews: {
             type: Number,
             required: true
-        }
+        },
+        products: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product'
+            }
+        ]
     },
     { timestamps: true }
 );

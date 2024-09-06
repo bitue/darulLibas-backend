@@ -8,6 +8,7 @@
 
 // }
 
+const { Category } = require('../Category/Category.model');
 const { Product } = require('./Product.model');
 
 const addProduct = async (req, res, next) => {
@@ -43,6 +44,12 @@ const addProduct = async (req, res, next) => {
             reviews,
             features
         });
+        // add it to the category schema
+        await Category.updateOne(
+            { _id: category }, // Query to find the order
+            { $push: { products: addProduct._id } } // Update to push the productId into the products array
+        );
+
         res.send({ status: 'Product Added Successful', product: addProduct });
     } catch (err) {
         console.log(err.message);
@@ -52,10 +59,7 @@ const addProduct = async (req, res, next) => {
 
 const getAllProducts = async (req, res, next) => {
     try {
-        const getAllProducts = await Product.find({}).populate({
-            path: 'category', // Path to populate
-            match: { name: 'panjabi' } // Filter categories by name
-        });
+        const getAllProducts = await Category.find({}).populate('products');
 
         console.log(getAllProducts);
         res.send({ status: 'Category deleted successfully .....', products: getAllProducts });
