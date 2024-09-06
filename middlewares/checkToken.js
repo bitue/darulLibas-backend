@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const checkToken = async (req, res, next) => {
     const { authorization } = req.headers;
-    console.log(1);
+    console.log(authorization, 101);
 
     if (!authorization) {
         res.status(401).send('Unauthorized 1 !');

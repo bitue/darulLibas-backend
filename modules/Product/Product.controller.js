@@ -27,6 +27,8 @@ const addProduct = async (req, res, next) => {
             features
         } = req.body;
 
+        console.log(req.tokenPayLoad, 11);
+
         const addProduct = await Product.create({
             productName,
             productPrice,
@@ -50,7 +52,11 @@ const addProduct = async (req, res, next) => {
 
 const getAllProducts = async (req, res, next) => {
     try {
-        const getAllProducts = await Product.find({}).populate('category');
+        const getAllProducts = await Product.find({}).populate({
+            path: 'category', // Path to populate
+            match: { name: 'panjabi' } // Filter categories by name
+        });
+
         console.log(getAllProducts);
         res.send({ status: 'Category deleted successfully .....', products: getAllProducts });
     } catch (err) {

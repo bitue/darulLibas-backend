@@ -15,8 +15,8 @@ const { changeOrderStatus, getAllOrders, getOrderById } = require('../Order/Orde
 const { getCustomerInfo } = require('../Customer/customer.controller');
 const adminRouter = app.Router();
 
-adminRouter.post('/createAdmin', createAdmin);
-adminRouter.delete('/deleteAdmin', deleteAdmin);
+adminRouter.post('/createAdmin', createAdmin); // checkRole
+adminRouter.delete('/deleteAdmin', deleteAdmin); // checkRole
 adminRouter.get('/getAllAdmin', getAllAdmin);
 adminRouter.post('/changePasswordAdmin', changePasswordAdmin);
 
