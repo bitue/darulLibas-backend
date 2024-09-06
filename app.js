@@ -45,11 +45,14 @@ app.use((req, res, next) => {
     res.send(error);
 });
 
-// final error handling  middl eware error : 500
+// final error handling  middleware error : 500
 
-app.use((err, req, res, next) => {
+app.use((error, req, res, next) => {
     console.log('last middleware');
-    res.status(err.status || 500).send(err.message);
+    res.status(err.status || 500).json({
+        error: true,
+        message: err.message
+    });
 });
 
 module.exports = app;

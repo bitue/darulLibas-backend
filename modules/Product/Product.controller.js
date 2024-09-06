@@ -1,13 +1,3 @@
-// const addProduct = async(req, res, next) => {
-//     try {
-
-//     } catch (err) {
-//         console.log(err.message);
-//         next(err.message);
-//     }
-
-// }
-
 const { Category } = require('../Category/Category.model');
 const { Product } = require('./Product.model');
 
@@ -62,7 +52,7 @@ const getAllProducts = async (req, res, next) => {
         const getAllProducts = await Category.find({}).populate('products');
 
         console.log(getAllProducts);
-        res.send({ status: 'Category deleted successfully .....', products: getAllProducts });
+        res.send({ status: 'OK', products: getAllProducts });
     } catch (err) {
         console.log(err.message);
         next(err.message);
