@@ -25,14 +25,37 @@ const getCategories = async (req, res, next) => {
 const deleteCategory = async (req, res, next) => {
     try {
         const { id } = req.body;
-        const deleteCategoryRes = await Category.findByIdAndDelete({ _id: id });
-        // want to delete call product which is in this category
-        const deleteProductAll = await Product.deleteMany({ category: id });
-        res.send({
-            status: 'Category and associated product deleted successfully .....',
-            res: deleteCategoryRes,
-            deleteAllProductRes: deleteProductAll
+
+        // Find the category by ID to get the associated products
+        const category = await Category.findById(id);
+
+        if (!category) {
+            return res.status(404).send({
+                status: 'Category not found'
+            });
+        }
+
+        // Delete all products associated with this category
+        const deleteProductAll = await Product.deleteMany({
+            _id: { $in: category.products }
         });
+
+        // Delete the category itself
+        const deleteCategoryRes = await Category.findByIdAndDelete(id);
+
+        res.send({
+            status: 'Category and associated products deleted successfully',
+            category: deleteCategoryRes,
+            deletedProducts: deleteProductAll
+        });
+        // const { id } = req.body;
+        // const deleteCategoryRes = await Category.findByIdAndDelete({ _id: id });
+
+        // res.send({
+        //     status: 'Category and associated product deleted successfully .....',
+        //     res: deleteCategoryRes,
+        //     deleteAllProductRes: deleteProductAll
+        // });
     } catch (err) {
         console.log(err.message);
         next(err.message);

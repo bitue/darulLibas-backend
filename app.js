@@ -8,6 +8,7 @@ const { adminRouter } = require('./modules/Admin/Admin.route');
 const { orderRouter } = require('./modules/Order/Order.router');
 const { publicRouter } = require('./modules/Public/Public.router');
 const { checkToken } = require('./middlewares/checkToken');
+const { queryRouter } = require('./modules/Query/Query.router');
 
 require('dotenv').config(); // req for access dot env file
 
@@ -36,6 +37,9 @@ app.use('/admin', checkToken, adminRouter);
 
 // order routers
 app.use('/order', orderRouter);
+
+// query routers
+app.use('/query', queryRouter);
 
 // not found any route error : 404
 app.use((req, res, next) => {

@@ -8,7 +8,7 @@ const publicRouter = express.Router();
 
 publicRouter.get('/getAllCategories', getCategories);
 publicRouter.get('/getAllProducts', getAllProducts);
-publicRouter.get('/getProductById', getProductById);
+publicRouter.get('/getProductById', getProductById); // not used
 module.exports = {
     publicRouter
 };

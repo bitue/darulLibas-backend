@@ -5,13 +5,13 @@ const productSchema = new mongoose.Schema(
         productName: {
             type: String,
 
-            required: [true],
+            required: true,
             index: true
         },
         productPrice: {
             type: Number,
 
-            required: [true]
+            required: true
         },
         productImgList: {
             type: [String], // Array of strings

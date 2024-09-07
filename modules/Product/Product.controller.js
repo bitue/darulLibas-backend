@@ -62,8 +62,23 @@ const getAllProducts = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     try {
         const { id } = req.body;
+        // pull the product id from the category
+        // const removeId = await Category.findByIdAndUpdate(
+        //     { _id: id },
+        //     { $pull: { products: id } }, // Removes the product ID from the products array
+        //     { new: true } // Returns the updated document
+        // );
+        const updatedCategory = await Category.updateMany(
+            { products: id },
+            { $pull: { products: id } }
+        );
+
         const deleteProductRes = await Product.findByIdAndDelete({ _id: id });
-        res.send({ status: 'Category deleted successfully .....', res: deleteProductRes });
+        res.send({
+            status: 'Category deleted successfully .....',
+            res: deleteProductRes,
+            categoryUpdate: updatedCategory
+        });
     } catch (err) {
         console.log(err.message);
         next(err.message);
