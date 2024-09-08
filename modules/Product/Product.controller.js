@@ -1,4 +1,6 @@
 const { Category } = require('../Category/Category.model');
+const { Order } = require('../Order/Order.model');
+const { Shopping } = require('../Shopping/Shopping.model');
 const { Product } = require('./Product.model');
 
 const addProduct = async (req, res, next) => {
@@ -68,17 +70,32 @@ const deleteProduct = async (req, res, next) => {
         //     { $pull: { products: id } }, // Removes the product ID from the products array
         //     { new: true } // Returns the updated document
         // );
-        const updatedCategory = await Category.updateMany(
-            { products: id },
-            { $pull: { products: id } }
+
+        // here need to check the product whether is associated with orders
+        const associatedProduct = await Shopping.find({ productId: id });
+        console.log(
+            associatedProduct,
+            'orders associated with this product ',
+            associatedProduct.length
         );
 
-        const deleteProductRes = await Product.findByIdAndDelete({ _id: id });
-        res.send({
-            status: 'Category deleted successfully .....',
-            res: deleteProductRes,
-            categoryUpdate: updatedCategory
-        });
+        if (associatedProduct.length) {
+            res.send({
+                message: 'This product is associated with shopping carts'
+            });
+        } else {
+            const updatedCategory = await Category.updateMany(
+                { products: id },
+                { $pull: { products: id } }
+            );
+
+            const deleteProductRes = await Product.findByIdAndDelete({ _id: id });
+            res.send({
+                status: 'Category deleted successfully .....',
+                res: deleteProductRes,
+                categoryUpdate: updatedCategory
+            });
+        }
     } catch (err) {
         console.log(err.message);
         next(err.message);
