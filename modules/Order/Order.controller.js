@@ -157,8 +157,10 @@ const getOrderById = async (req, res, next) => {
 const deleteOrderById = async (req, res, next) => {
     try {
         const { id } = req.body;
+
         //console.log(req);
         const getOrder = await Order.findById({ _id: id });
+        //console.log(getOrder, '------------------');
         // del the customer info
         await Customer.findByIdAndDelete({ _id: getOrder.customerInfo });
         // del the shopping info

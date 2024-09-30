@@ -53,9 +53,9 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
     console.log('last middleware');
-    res.status(err.status || 500).json({
+    res.status(error.status || 500).json({
         error: true,
-        message: err.message
+        message: error.message
     });
 });
 

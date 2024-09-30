@@ -17,7 +17,7 @@ const adminRouter = app.Router();
 
 adminRouter.post('/createAdmin', createAdmin); // checkRole
 adminRouter.delete('/deleteAdmin', deleteAdmin); // checkRole
-adminRouter.get('/getAllAdmin', getAllAdmin);
+adminRouter.get('/getAllAdmin', getAllAdmin); // checkROle
 adminRouter.post('/changePasswordAdmin', changePasswordAdmin);
 
 adminRouter.post('/addCategory', createCategory);
@@ -31,7 +31,7 @@ adminRouter.post('/changeOrderStatus', changeOrderStatus);
 adminRouter.get('/getAllOrders', getAllOrders);
 adminRouter.get('/getOrderById', getOrderById);
 
-adminRouter.get('/getCustomers', getCustomerInfo);
+adminRouter.get('/getCustomers', getCustomerInfo); 
 
 module.exports = {
     adminRouter
